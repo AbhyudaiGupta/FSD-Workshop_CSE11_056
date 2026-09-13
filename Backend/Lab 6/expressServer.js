@@ -1,147 +1,73 @@
+// npm install express dotenv
 import express from "express";
-//import dotev from "dotenv";
-import cors from "cors";
-//dotev.config();
-//const port=process.env.PORT || 3000;
+const userData=[{
+    id:1,
+    name:"Aarav",
+    age:19
+}];
+
 const port=3000;
-const app=express();
-const userData=[
-    {
-        "id":10,
-        "name":"Abhyudai",
-        "class":"CSE11"
-    }
-];
+const app=express();   // create app is used to act as a instance for express.
 app.use(express.json());
-// app.use(cors());
 
-app.get("/",(req,res)=>{
-    res.status(200).json({
-        message:"Welcome user",
-    });
-});
-
-app.get("/user",(req,res)=>{
-    try {
-        res.status(200).json({
-            users: userData
-        });
-    } catch (error) {
-        res.status(500).json({
-            message: "Internal server error"
-        });
-    }
-});
-
+//using get
 app.get("/msg",(req,res)=>{
-    res.status(200).json({
-        message: "Hello from server"
-    });
+    res.end("Welcome to the express");
+
 });
-
-app.get("/user/:id", (req, res) => {
-    try {
-        const id = req.params.id;
-
-        const user = userData.find((u) => u.id == id);
-
-        if (user) {
-            return res.status(200).json({
-                message: "Data received",
-                user
-            });
-        }
-
-        return res.status(404).json({
-            message: "User not found"
-        });
-
-    } catch (err) {
-        console.error("Error:", err.message);
-
-        return res.status(500).json({
-            message: "Internal server error"
-        });
+app.get("/user",(req,res)=>{
+    res.end(JSON.stringify(userData));
+});
+app.get("/user/:id",(req,res)=>{
+    
+    const id=req.params.id;
+    const user=userData.find((u)=>u.id==id);
+    if(!user){
+        return res.status(400).json({message:"User Not Found"});
     }
+    return res.status(200).json({message:"Data Recieved",user});
 });
-
-
+//using post
 app.post("/create",(req,res)=>{
-    const {id,name,class:className}=req.body;
-    const newUser={
+    try{
+    let {id,name,age}=req.body;
+    
+    let data={
         id,
         name,
-        class:className,
+        age
     };
-    userData.push(newUser);
-    res.status(201).json({  
-        message: "User created successfully",
-        user: newUser
-    });
+    userData.push(data);
+    res.end("Data added");
+}
+catch(err){
+    console.log(err);
+    res.end(err);
+}
 });
 
-app.put("/edit/:id",(req,res)=>{
-    const userId=parseInt(req.params.id);
-    const index=userData.findIndex(user=>user.id===userId);
-    if (index !== -1) {
-        const {name,class:className}=req.body;
-        userData[index]={
-            ...userData[index],
-            name,
-            class:className
-        };
-        res.status(200).json({
-            message: "User updated successfully",
-            user: userData[index]
-        });
-    } else {
-        res.status(404).json({
-            message: "User not found"
-        });
-    }
+//using put
+app.put("/put/:id",(req,res)=>{ 
+    const id=req.params.id;
+    const user=userData[id-1];
+    let {name,age}=req.body;
+    if (!user) {
+    return res.status(404).json({ message: "User Not Found" });
+}
+    user.name = name;
+    user.age = age;
+    return res.status(200).json({message:"Data Changed"});
 });
 
-app.delete("/delete/:id",(req,res)=>{
-    const userId=parseInt(req.params.id);
-    const index=userData.findIndex(user=>user.id===userId);
-    if (index !== -1) {
-        userData.splice(index,1);
-        res.status(200).json({
-            message: "User deleted successfully"
-        });
-    } else {
-        res.status(404).json({
-            message: "User not found"
-        });
-    }
-});
-
-app.post("/register",(req,res)=>{
-    const {username,password}=req.body;
-    const newUser={
-        username,
-        password
-    };
-    registerData.push(newUser);
-    res.status(201).json({
-        message: "User registered successfully",
-        user: newUser
-    });
-});
-
-app.post("/login",(req,res)=>{
-    const {username,password}=req.body;
-    const user=registerData.find(user=>user.username===username && user.password===password);
-    if (user) {
-        res.status(200).json({
-            message: "Login successful",
-            user: user
-        });
-    } else {
-        res.status(401).json({
-            message: "Invalid credentials"
-        });
-    }
+//using delete
+app.delete("/delete/:id",(req,res)=>{ 
+    const id=req.params.id;
+    let user=userData[id-1];
+    if (!user) {
+    return res.status(404).json({ message: "User Not Found" });
+}
+    delete userData[id-1] ;
+    return res.status(200).json({message:"Data Delelted is",user});
 });
 
 app.listen(port,()=>{
