@@ -1,0 +1,37 @@
+# -----------------------------------------------------------
+# Student Management System
+#
+# Only the assignment project (student-management/) and this
+# README/.gitignore are meant to be pushed to git.
+# The other root files belong to the online preview workspace
+# and are ignored below.
+# -----------------------------------------------------------
+
+# Dependencies
+node_modules/
+
+# Build output
+.next/
+dist/
+
+# Environment / secrets
+.env
+*.local
+
+# Auto-generated framework file
+next-env.d.ts
+
+# Preview-workspace files (not part of the assignment)
+/src/
+/next.config.js
+/tsconfig.json
+/package.json
+/package-lock.json
+
+# Logs
+*.log
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/

@@ -1,0 +1,14 @@
+{
+  "name": "student-management-backend",
+  "version": "1.0.0",
+  "description": "Express REST API for the Student Management System (in-memory storage, no database)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2"
+  }
+}
