@@ -11,9 +11,10 @@
   "license": "ISC",
   "type": "module",
   "dependencies": {
-    "cores": "^0.8.5",
+    "cores": "^0.8.0",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
-    "express": "^5.2.1"
+    "express": "^5.3.0",
+    "mongoose": "^9.12.2"
   }
 }
